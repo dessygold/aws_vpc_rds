@@ -2,9 +2,12 @@
 resource "aws_vpc" "stackvpc" {
     cidr_block = var.vpc_cidr
     enable_dns_hostnames = true
-    tags {
+
+    
+tags = {
         Name = "TF-aws-vpc"
     }
+
 }
 
 # In order for the resources in a VPC to send and receive traffic from the internet
@@ -72,22 +75,22 @@ resource "aws_security_group" "nat" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
-    tags {
+    tags = {
         Name = "NATSG"
     }
 }
-
+# NAT Instance
 resource "aws_instance" "nat" {
-    ami = "ami-30913f47" # this is a special ami preconfigured to do NAT
-    availability_zone = "us-east-1b"
+    ami = "ami-0ff8a91507f77f867" # this is a special ami preconfigured to do NAT
+    availability_zone = "us-east-1d"
     instance_type = "m1.small"
-    key_name = var.aws_key_name
+    key_name = aws_key_pair.public-ec2-key.key_name
     vpc_security_group_ids = ["${aws_security_group.nat.id}"]
     subnet_id = aws_subnet.stack-public-subnet.id
     associate_public_ip_address = true
     source_dest_check = false
 
-    tags {
+    tags = {
         Name = "VPC NAT"
     }
 }
@@ -98,67 +101,30 @@ resource "aws_eip" "nat" {
 }
 
 /*
-  Public Subnet
+  Public Subnet 
 */
 resource "aws_subnet" "stack-public-subnet" {
     vpc_id = aws_vpc.stackvpc.id
 
     cidr_block = var.public_subnet_cidr
-    availability_zone = "us-east-1a"
+    availability_zone = "us-east-1d"
 
-    tags {
+    tags = {
         Name = "Public Subnet"
     }
 }
 
-# The route tables associated with our public subnet (including custom route tables)
-# must have a route to the internet gateway.
-
-resource "aws_route_table" "stack-rt-public" {
-    vpc_id = aws_vpc.stackvpc.id
-
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.stackigw.id
-    }
-
-    tags {
-        Name = "Public Subnet"
-    }
-}
-
-resource "aws_route_table_association" "stack-rta-public" {
-    subnet_id = aws_subnet.stack-public-subnet.id
-    route_table_id = aws_route_table.stack-rt-public.id
-}
 
 /*
-  Private Subnet,  Route table and rt Association and NAT association with RT
+  Private Subnet
 */
 resource "aws_subnet" "stack-private-subnet" {
     vpc_id = aws_vpc.stackvpc.id
 
     cidr_block = var.private_subnet_cidr
-    availability_zone = "us-east-1b"
+    availability_zone = "us-east-1c"
 
-    tags {
+    tags = {
         Name = "Private Subnet"
     }
-}
-
-resource "aws_route_table" "stack-rt-private" {
-    vpc_id = aws_vpc.stackvpc.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        instance_id = aws_instance.nat.id
-    }
-
-    tags {
-        Name = "Private Subnet"
-    }
-}
-
-resource "aws_route_table_association" "stack-rta-private" {
-    subnet_id = aws_subnet.stack-private-subnet.id
-    route_table_id = aws_route_table.stack-rt-private.id
 }
