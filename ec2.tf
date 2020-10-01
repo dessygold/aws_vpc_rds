@@ -19,7 +19,7 @@ resource "aws_network_interface" "my_network_interface_public" {
   security_groups = [aws_security_group.nat.id] 
 
   tags = {
-    Name = "STACK-EC2-PUBLIC"
+    Name = "VPC-PUBLIC"
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_network_interface" "my_network_interface_private" {
   security_groups = [aws_security_group.nat.id] 
 
   tags = {
-    Name = "STACK-EC2-PUBLIC"
+    Name = "VPC-PRIVATE"
   }
 }
 
