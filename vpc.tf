@@ -79,7 +79,7 @@ resource "aws_security_group" "private-instance" {
 
 #Security Group for Public subnet and public ec2
 resource "aws_security_group" "public-instance" {
-    name = "allow_private_internet_access"
+    name = "allow_private_internet_access_through_NAT"
     description = "Allow traffic to pass from the private subnet to the internet"
     vpc_id = aws_vpc.stackvpc.id
 
@@ -122,8 +122,8 @@ ingress {
     }
 
     egress {
-        from_port = -1
-        to_port = -1
+        from_port = 0
+        to_port = 0
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
