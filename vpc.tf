@@ -155,8 +155,9 @@ resource "aws_eip" "nat" {
 # Nat Gatway
 resource "aws_nat_gateway" "nat-gateway" {
     allocation_id =aws_eip.nat.id
+    subnet_id = aws_subnet.stack-public-subnet.id
   tags = {
-      Name = NAT-Gateway
+      Name = "NAT-Gateway"
   }
 }
 

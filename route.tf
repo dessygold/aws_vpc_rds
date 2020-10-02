@@ -24,7 +24,7 @@ resource "aws_route_table" "stack-rt-private" {
     vpc_id = aws_vpc.stackvpc.id
     route {
         cidr_block = "0.0.0.0/0"
-        instance_id = aws_instance.nat.id
+        gateway_id = aws_nat_gateway.nat-gateway.id
     }
 
     tags = {

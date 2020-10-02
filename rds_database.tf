@@ -17,7 +17,7 @@ resource "aws_db_instance" "stack-rds-db" {
   skip_final_snapshot = true
 
   tags = {
-    Name = rds-db
+    Name = "rds-db"
   }
 
 
@@ -28,7 +28,7 @@ resource "aws_db_instance" "stack-rds-db" {
 
 
 resource "aws_db_subnet_group" "rds-subgroup" {
-  name =
+  name = "rds-subnet-group"
   subnet_ids = [
     aws_subnet.rds-private-subnet.id,
     aws_subnet.stack-private-subnet.id
