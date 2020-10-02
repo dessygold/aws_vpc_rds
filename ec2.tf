@@ -16,7 +16,7 @@ resource "aws_instance" "stack-ec2-public" {
 resource "aws_network_interface" "my_network_interface_public" {
   subnet_id       = aws_subnet.stack-public-subnet.id
   private_ips     = ["10.0.0.7"]
-  security_groups = [aws_security_group.nat.id] 
+  security_groups = [aws_security_group.public-instance.id] 
 
   tags = {
     Name = "VPC-PUBLIC"
@@ -51,7 +51,7 @@ resource "aws_instance" "stack-ec2-private" {
 resource "aws_network_interface" "my_network_interface_private" {
   subnet_id       = aws_subnet.stack-private-subnet.id
   private_ips     = ["10.0.1.8"]
-  security_groups = [aws_security_group.nat.id] 
+  security_groups = [aws_security_group.private-instance.id] 
 
   tags = {
     Name = "VPC-PRIVATE"
