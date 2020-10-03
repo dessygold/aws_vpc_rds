@@ -4,6 +4,7 @@ resource "aws_db_instance" "stack-rds-db" {
   engine               = "mysql"
   engine_version       = "8.0.20"
   instance_class       = "db.t2.micro"
+  identifier           = "goldrds"
   name                 = var.rdsdb_name
   username             = var.rds_username
   password             = var.rds_password
