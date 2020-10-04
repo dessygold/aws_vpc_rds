@@ -203,3 +203,14 @@ resource "aws_subnet" "rds-private-subnet" {
         Name = "rds-Private-Subnet"
     }
 }
+
+resource "aws_subnet" "bob-private-subnet" {
+    vpc_id = aws_vpc.stackvpc.id
+
+    cidr_block = var.bob_private_subnet_cidr
+    availability_zone = "us-east-1e"
+
+    tags = {
+        Name = "rds-Private-Subnet"
+    }
+}

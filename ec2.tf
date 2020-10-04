@@ -1,9 +1,10 @@
 # Create two EC2 Instance, one in public and other in Private subnet
 resource "aws_instance" "stack-ec2-public" {
-  ami           = "ami-0c94855ba95c71c99"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.public-ec2-key.key_name
-  user_data     = file("server-script.sh")
+  ami                    = "ami-0c94855ba95c71c99"
+  instance_type          = "t2.micro"
+  iam_instance_profile   = aws_iam_instance_profile.test_profile.name
+  key_name               = aws_key_pair.public-ec2-key.key_name
+  user_data              = file("server-script.sh")
   network_interface {
     network_interface_id = aws_network_interface.my_network_interface_public.id
     device_index         = 0

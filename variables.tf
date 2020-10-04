@@ -34,6 +34,10 @@ variable "rds_private_subnet_cidr" {
     description = "CIDR for the Private Subnet"
     default = "10.0.2.0/24"
 }
+variable "bob_private_subnet_cidr" {
+    description = "CIDR for the Private Subnet"
+    default = "10.0.3.0/24"
+}
 variable "rdsdb_name" {
     description = "rds db name"
     default = "wordpressdb"
